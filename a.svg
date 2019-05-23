@@ -1,0 +1,21 @@
+<svg width="48" height="40" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <defs>
+  <radialGradient fy="0.5" fx="0.5" cy="1" cx="0" r="0.01" gradientTransform="rotate(-90,0,1) translate(0,0) scale(-0.010000000000000009,1)" spreadMethod="pad" id="svg_18">
+   <stop offset="1" stop-color="#ffffff"/>
+   <stop offset="1" stop-color="#000000"/>
+  </radialGradient>
+ </defs>
+ <g>
+  <title>background</title>
+  <rect fill="url(#svg_18)" id="canvas_background" height="42" width="50" y="-1" x="-1"/>
+  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_11" y2="0" x2="48" y1="40" x1="0" stroke="#ff0000" fill="none"/>
+  <line x1="0" y1="-0.161551" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_12" y2="39.838449" x2="48" stroke="#ff0000" fill="none"/>
+ </g>
+</svg>

@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700');
+@import url('https://fonts.googleapis.com/css?family=Kanit:400,500,600,700,800,900&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Paytone+One&display=swap');
+
+* {
+    box-sizing: border-box;
+    text-stroke: 1px black;
+    -webkit-text-stroke: 1px black;
+}
+
+html {
+    /* background-color: grey; */
+    font-family: 'Ubuntu', sans-serif;
+    font-family: 'Paytone One', sans-serif;
+    font-weight: 500;
+    color:white;
+    background-color: black;
+}
+
+#root {
+    height: 100%;
+}
+
+table {
+    display: none;
+}
+.placeholder {
+    z-index: -100;
+    position: relative;
+    /* background-color: red; */
+    padding: 4px 0 0 0;
+    height: 40px;
+    /* width: 40px; */
+    /* border: solid 6px green; */
+}
+
+.arrow {
+    font-style: bold;
+    font-size: 30px;
+}
+span {
+    display: inline-block;
+    width: 48px;
+    height: 100%;
+    text-align: center;
+    padding: 1px 0 0 0;
+}
+
+.middle {
+    font-family: 'Kanit', sans-serif;
+    font-family: 'Paytone One', sans-serif;
+    /* color: black; */
+    /* font-size: 16 px; */
+    text-align: center;
+    /* font-weight: 700; */
+    text-stroke: 3px black;
+    -webkit-text-stroke: 1px black;
+    /* text-shadow:
+		-1px -1px 0 #000,
+		1px -1px 0 #000,
+		-1px 1px 0 #000,
+		1px 1px 0 #000; */
+}
+
+img {
+    position: absolute;
+
+    left: -6px;
+    top: -6px;
+}
+
+.immune {
+    border: solid 2px rgb(0, 0, 0);
+    position: relative;
+}
+svg {
+    position: absolute;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+}
+
+div {
+    white-space: nowrap;
+    height: 40px;
+}
+
+.credit {
+    text-stroke: 0px white;
+    -webkit-text-stroke: 0px white;
+}
