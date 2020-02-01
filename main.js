@@ -1,297 +1,274 @@
 (() => {
+    "use strict";
 
-  let colors = {
-    "Normal": "#A8A878",
-    "Fire": "#F08030",
-    "Grass": "#78C850",
-    "Water": "#6890F0",
-    "Electric": "#F8D030",
-    "Flying": "#6D5E9C",
-    "Fighting": "#C03028",
-    "Poison": "#A040A0",
-    "Bug": "#A8B820",
-    "Psychic": "#F85888",
-    "Ghost": "#705898",
-    "Dark": "#705848",
-    "Ice": "#98D8D8",
-    "Dragon": "#7038F8",
-    "Fairy": "#EE99AC",
-    "Ground": "#E0C068",
-    "Rock": "#B8A038",
-    "Steel": "#B8B8D0",
-  };
-  let shorts = {
-    "Normal": "NOR",
-    "Fire": "FIR",
-    "Fighting": "FGH",
-    "Water": "WTR",
-    "Flying": "FLY",
-    "Grass": "GRS",
-    "Poison": "POI",
-    "Electric": "ELC",
-    "Ground": "GRN",
-    "Psychic": "PSY",
-    "Rock": "ROC",
-    "Ice": "ICE",
-    "Bug": "BUG",
-    "Dragon": "DRA",
-    "Ghost": "GHO",
-    "Dark": "DRK",
-    "Steel": "STL",
-    "Fairy": "FAI"
-  }
+    const root = document.querySelector("#root");
+    let data = [
+        {
+            name: "Normal",
+            short: "NOR",
+            color: "#A8A878",
+            super: [],
+            weak: ["Rock", "Steel"],
+            immune: ["Ghost"]
+        },
+        {
+            name: "Fire",
+            short: "FIR",
+            color: "#F08030",
+            super: ["Grass", "Ice", "Bug", "Steel"],
+            weak: ["Fire", "Water", "Rock", "Dragon"],
+            immune: []
+        },
+        {
+            name: "Grass",
+            short: "GRS",
+            color: "#78C850",
+            super: ["Water", "Ground", "Rock"],
+            weak: ["Fire", "Grass", "Poison", "Flying", "Bug", "Dragon", "Steel"],
+            immune: []
+        },
+        {
+            name: "Water",
+            short: "WTR",
+            color: "#6890F0",
+            super: ["Fire", "Ground", "Rock"],
+            weak: ["Water", "Grass", "Dragon"],
+            immune: []
+        },
+        {
+            name: "Electric",
+            short: "ELC",
+            color: "#F8D030",
+            super: ["Water", "Flying"],
+            weak: ["Electric", "Grass", "Dragon"],
+            immune: ["Ground"]
+        },
+        {
+            name: "Flying",
+            short: "FLY",
+            color: "#6D5E9C",
+            super: ["Grass", "Fighting", "Bug"],
+            weak: ["Electric", "Rock", "Steel"],
+            immune: []
+        },
+        {
+            name: "Fighting",
+            short: "FGH",
+            color: "#C03028",
+            super: ["Normal", "Ice", "Rock", "Dark", "Steel"],
+            weak: ["Poison", "Flying", "Psychic", "Bug", "Fairy"],
+            immune: ["Ghost"]
+        },
+        {
+            name: "Poison",
+            short: "POI",
+            color: "#A040A0",
+            super: ["Grass", "Fairy"],
+            weak: ["Poison", "Ground", "Rock", "Ghost"],
+            immune: ["Steel"]
+        },
+        {
+            name: "Bug",
+            short: "BUG",
+            color: "#A8B820",
+            super: ["Grass", "Psychic", "Dark"],
+            weak: ["Fire", "Fighting", "Poison", "Flying", "Ghost", "Steel", "Fairy"],
+            immune: []
+        },
+        {
+            name: "Psychic",
+            short: "PSY",
+            color: "#F85888",
+            super: ["Fighting", "Poison"],
+            weak: ["Psychic", "Steel"],
+            immune: ["Dark"]
+        },
+        {
+            name: "Ghost",
+            short: "GHO",
+            color: "#705898",
+            super: ["Psychic", "Ghost"],
+            weak: ["Dark"],
+            immune: ["Normal"]
+        },
+        {
+            name: "Dark",
+            short: "DRK",
+            color: "#705848",
+            super: ["Psychic", "Ghost"],
+            weak: ["Fighting", "Dark", "Fairy"],
+            immune: []
+        },
+        {
+            name: "Ice",
+            short: "ICE",
+            color: "#98D8D8",
+            super: ["Grass", "Ground", "Flying", "Dragon"],
+            weak: ["Fire", "Water", "Ice", "Steel"],
+            immune: []
+        },
+        {
+            name: "Dragon",
+            short: "DGN",
+            color: "#7038F8",
+            super: ["Dragon"],
+            weak: ["Steel"],
+            immune: ["Fairy"]
+        },
+        {
+            name: "Fairy",
+            short: "FAI",
+            color: "#EE99AC",
+            super: ["Fighting", "Dragon", "Dark"],
+            weak: ["Fire", "Poison", "Steel"],
+            immune: []
+        },
+        {
+            name: "Ground",
+            short: "GRD",
+            color: "#E0C068",
+            super: ["Fire", "Electric", "Poison", "Rock", "Steel"],
+            weak: ["Grass", "Bug"],
+            immune: ["Flying"]
+        },
+        {
+            name: "Rock",
+            short: "ROC",
+            color: "#B8A038",
+            super: ["Fire", "Ice", "Flying", "Bug"],
+            weak: ["Fighting", "Ground", "Steel"],
+            immune: []
+        },
+        {
+            name: "Steel",
+            short: "STE",
+            color: "#B8B8D0",
+            super: ["Ice", "Rock", "Fairy"],
+            weak: ["Fire", "Water", "Electric", "Steel"],
+            immune: []
+        }
+    ];
+    const createBorder = color => `solid 4px ${color}`;
+    const createBox = (element, parent, effect, pos) => {
+        let box = document.createElement("span");
+        let parentElem = document.querySelector(".row-" + parent.name);
+        let leftSide = document.querySelector("." + parent.name + "-left-side");
+        let rightSide = document.querySelector("." + parent.name + "-right-side");
+        box.classList.add("box", element.name, effect);
+        box.textContent = element.short;
+        if (effect === "immune") {
+            let img = document.createElement("img");
+            img.classList.add("immuneImg");
+            img.src = "a.svg";
+            box.style.border = createBorder(element.color);
+            box.appendChild(img);
+        } else if (effect === "weak") {
+            box.style.border = createBorder(element.color);
+        } else if (
+            effect === "super" &&
+            (element.weak.findIndex(weak => weak === parent.name) >= 0 ||
+                element.immune.findIndex(immune => immune === parent.name) >= 0)
+        ) {
+            box.classList.add("dom");
+            box.style.border = createBorder(LightenDarkenColor(element.color, -60));
+            box.style.backgroundColor = element.color;
+        } else if (
+            effect === "super" &&
+            (parent.weak.findIndex(weak => weak === element.name) >= 0 ||
+                parent.immune.findIndex(immune => immune === element.name) >= 0)
+        ) {
+            box.classList.add("dom");
+            box.style.border = createBorder(LightenDarkenColor(element.color, -60));
+            box.style.backgroundColor = element.color;
+        } else if (effect === "super") {
+            box.style.border = createBorder(element.color);
+            box.style.backgroundColor = element.color;
+        }
+        if (pos === "left") leftSide.appendChild(box);
+        if (pos === "right") rightSide.appendChild(box);
+    };
 
-  const tbody = document.querySelector("tbody");
-  const summary = [];
-  let elemList = document.querySelectorAll(".type-icon");
-  elemList = Array.from(elemList);
-  elemList = elemList.slice(elemList.length / 2);
-  console.log('elemList: ', typeof elemList);
-  let elemList2 = [];
-  Object.keys(colors).forEach((color, i) => {
-    elemList2[i] = elemList.find(type => {
-      return type.classList.contains("type-" + color.toLocaleLowerCase())
-    });
-  });
-  console.log('elemList2: ', elemList2);
-  const root = document.querySelector("#root");
-  elemList2.forEach(elem => {
-    const typeElem = document.createElement("div");
-    typeElem.classList.add(elem.textContent + "-middle");
-    let midSpan = document.createElement("span");
-    midSpan.classList.add("middle");
-    midSpan.style.border = "solid 6px " + colors[elem.innerHTML];
-    midSpan.textContent = shorts[elem.innerHTML];
-    midSpan.style.backgroundColor = colors[elem.innerHTML];
-    let arrow = document.createElement("span");
-    arrow.classList.add("arrow")
-    // arrow.textContent = " → ";
-    arrow.textContent = " ➞ ";
-    let arrow2 = document.createElement("span");
-    arrow2.classList.add("arrow")
-    // arrow2.textContent = " → ";
-    arrow2.textContent = " ➞ ";
-    typeElem.appendChild(arrow)
-    typeElem.appendChild(midSpan)
-    typeElem.appendChild(arrow2)
-    root.appendChild(typeElem);
-  });
-
-  tbody.childNodes.forEach(elem => {
-    if (elem.nodeName !== "TR") return;
-    const type = elem.childNodes[3].getAttribute("title").split(" ")[0];
-    summary.push({ name: type, super: [], weak: [], immune: [] });
-    elem.childNodes.forEach(tr => {
-      if (tr.nodeName !== "TD") return;
-      const text = tr.getAttribute("title");
-      const [curr, versus, effect] = text
-        .replace(/\s*/g, "")
-        .replace("→", "=")
-        .split("=");
-      if (effect.includes("super")) {
-        const index = summary.findIndex(type => type.name === curr);
-        summary[index].super.push(versus)
-      } else if (effect.includes("notvery")) {
-        const index = summary.findIndex(type => type.name === curr);
-        summary[index].weak.push(versus)
-      } else if (effect.includes("noeffect")) {
-        const index = summary.findIndex(type => type.name === curr);
-        summary[index].immune.push(versus)
-      }
-    });
-  });
-  let summary2 = []
-  Object.keys(colors).forEach((color, i) => {
-    summary2[i] = summary.find(type => type.name == color);
-  });
-  // console.log('summary2: ', summary2);
-  // return;
-  // console.log(typeof summary)
-  function LightenDarkenColor(col,amt) {
-    var usePound = false;
-    if ( col[0] == "#" ) {
-        col = col.slice(1);
-        usePound = true;
-    }
-
-    var num = parseInt(col,16);
-
-    var r = (num >> 16) + amt;
-
-    if ( r > 255 ) r = 255;
-    else if  (r < 0) r = 0;
-
-    var b = ((num >> 8) & 0x00FF) + amt;
-
-    if ( b > 255 ) b = 255;
-    else if  (b < 0) b = 0;
-
-    var g = (num & 0x0000FF) + amt;
-
-    if ( g > 255 ) g = 255;
-    else if  ( g < 0 ) g = 0;
-
-    return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
-}
-  // summary.slice(0, 3).forEach(curr => {
-  summary2.forEach(curr => {
-    // console.log(curr.name)
-    let middle = document.querySelector("." + curr.name + "-middle");
-    
-    let weakList = summary.filter(type => type.weak.includes(curr.name));
-    const immuneList = summary.filter(type => type.immune.includes(curr.name));
-    weakList = [...weakList, ...immuneList];
-    console.log('weakList: ', weakList);
-    // console.log('immuneList: ', immuneList);
-    // console.log('weakList: ', weakList);
-    weakList.forEach(type => {
-      if (curr.super.includes(type.name)) {
-        let rightSide = document.createElement("span");
-        rightSide.classList.add(type.name + "-dom-" + curr.name, "dom");
-        rightSide.style.border = "solid 6px " + LightenDarkenColor(colors[type.name], -70);
-        // rightSide.dataset.color = colors[type.name];
-        // rightSide.textContent = "[" + type.name + "]";
-        rightSide.style.backgroundColor = colors[type.name];
-        rightSide.textContent = shorts[type.name];
-        
-        middle.appendChild(rightSide);
-      }
-    })
-    curr.super.forEach(sup => {
-      let dominate = document.querySelector("." + sup + "-dom-" + curr.name);
-      if (dominate) return;
-      let rightSide = document.createElement("span");
-      rightSide.classList.add("neutral");
-      rightSide.style.border = "solid 6px " + colors[sup];
-      rightSide.style.backgroundColor = colors[sup];
-      rightSide.textContent = shorts[sup];
-      
-      middle.appendChild(rightSide);
-    });
-    
-    curr.weak.forEach(weak => {
-      let rightSide = document.createElement("span");
-      rightSide.classList.add("low")
-      // rightSide.textContent = `-${weak}-`;
-      rightSide.style.backgroundColor = "black";
-      rightSide.style.border = "solid 6px " + colors[weak];
-      rightSide.textContent = `${shorts[weak]}`;
-      middle.appendChild(rightSide);
-    });
-    curr.immune.forEach(immune => {
-      let rightSide = document.createElement("span");
-      let img = document.createElement("img");
-      img.src = "a.svg";
-      rightSide.classList.add("immune")
-      rightSide.style.color = "red";
-      rightSide.style.backgroundColor = "black";
-      rightSide.style.border = "solid 6px " + colors[immune];
-      // rightSide.style.backgroundColor = colors[immune];
-      rightSide.textContent = `${shorts[immune]}`;
-      // crossSVG.appendChild(lineSVG);
-      rightSide.appendChild(img);
-      middle.appendChild(rightSide);
-    });
-
-    // Leftside
-    let superList
-    summary.forEach(type => {
-      superList = summary.filter(type => type.super.includes(curr.name));
-    });
-    // console.log('superList: ', superList);
-    superList.forEach(type => {
-      if (type.super.includes(curr.name) && (curr.weak.includes(type.name) || curr.immune.includes(type.name))) {
+    // Setup row and middle item
+    data.forEach(type => {
+        const elem = document.createElement("div");
+        let box = document.createElement("span");
+        let arrow = document.createElement("span");
+        let arrow2 = document.createElement("span");
         let leftSide = document.createElement("span");
-        leftSide.classList.add(type.name + "-Ldom-" + curr.name, "dom");
-        // leftSide.textContent = `[${type.name}]`;
-        leftSide.style.border = "solid 6px " + LightenDarkenColor(colors[type.name], -70);
-        leftSide.style.backgroundColor = colors[type.name];
-        leftSide.textContent = `${shorts[type.name]}`;
-        middle.insertBefore(leftSide, middle.childNodes[0]);
-      }
-    })
-    summary.forEach(type => {
-      let dominate = document.querySelector("." + type.name + "-Ldom-" + curr.name);
-      if (dominate) return;
-      const supper = type.super.find(sup => sup === curr.name);
-      if (!supper) return;
-      let leftSide = document.createElement("span");
-      leftSide.classList.add("neutral")
-      leftSide.style.backgroundColor = colors[type.name];
-      leftSide.style.border = "solid 6px " + colors[type.name];
-      leftSide.textContent = `${shorts[type.name]}`;
-      middle.insertBefore(leftSide, middle.childNodes[0]);
+        leftSide.classList.add(type.name + "-left-side", "leftSide");
+        let rightSide = document.createElement("span");
+        rightSide.classList.add(type.name + "-right-side", "rightSide");
+        arrow.classList.add("box", "arrow");
+        arrow2.classList.add("box", "arrow");
+        arrow.textContent = " ➞ ";
+        arrow2.textContent = " ➞ ";
+        elem.classList.add("row", "row-" + type.name);
+        box.classList.add("box", type.name, "middle");
+        box.textContent = type.short;
+        box.style.border = createBorder(type.color);
+        box.style.backgroundColor = type.color;
+        elem.appendChild(leftSide);
+        elem.appendChild(arrow);
+        elem.appendChild(box);
+        elem.appendChild(arrow2);
+        elem.appendChild(rightSide);
+        root.appendChild(elem);
     });
-    summary.forEach(type => {
-      const weak = type.weak.find(sup => sup === curr.name);
-      if (!weak) return;
-      let leftSide = document.createElement("span");
-      leftSide.classList.add("low")
-      // leftSide.textContent = `-${type.name}-`;
-      leftSide.style.border = "solid 6px " + colors[type.name];
-      leftSide.style.backgroundColor = "black";
-      leftSide.textContent = `${shorts[type.name]}`;
-      middle.insertBefore(leftSide, middle.childNodes[0]);
+    data.forEach(type => {
+        type.super.reverse().forEach(sup => {
+            let curr = data.find(type => type.name === sup);
+            createBox(curr, type, "super", "right");
+            createBox(type, curr, "super", "left");
+        });
+        type.weak.reverse().forEach(weak => {
+            let curr = data.find(type => type.name === weak);
+            createBox(curr, type, "weak", "right");
+            createBox(type, curr, "weak", "left");
+        });
+        type.immune.reverse().forEach(immune => {
+            let curr = data.find(type => type.name === immune);
+            createBox(curr, type, "immune", "right");
+            createBox(type, curr, "immune", "left");
+        });
     });
-    summary.forEach(type => {
-      const immune = type.immune.find(sup => sup === curr.name);
-      if (!immune) return;
-      let leftSide = document.createElement("span");
-      // let cross = document.createElement("span");
-      let img = document.createElement("img");
-      img.src = "a.svg";
-      // cross.style.position = "absolute";
-      // cross.textContent = "X";
-      // cross.style.color = "red";
-      leftSide.classList.add("immune")
-      leftSide.style.backgroundColor = colors[type.name];
-      console.log('shorts[type.name]: ', shorts[type.name]);
-      console.log('colors[type.name]: ', colors[type.name]);
-      leftSide.textContent = `${shorts[type.name]}`;
-      leftSide.style.backgroundColor = "black";
-      leftSide.style.border = "solid 6px " + colors[type.name];
-      leftSide.style.color = "red";
-      leftSide.appendChild(img);
-      // leftSide.appendChild(cross);
-      middle.insertBefore(leftSide, middle.childNodes[0]);
+    root.childNodes.forEach(row => {
+        let have = Array.from(row.childNodes[0].childNodes).length;
+        let need = 14 - have;
+        [...Array(need).keys()].forEach(() => {
+            let box = document.createElement("span");
+            box.classList.add("box");
+            row.insertBefore(box, row.childNodes[0]);
+        });
     });
-  });
-  const steel = document.querySelector(".Steel-middle");
-  let i = 0;
-  let steelBool = true;
-  steel.childNodes.forEach(elem => {
-    if (elem.classList.contains("arrow")) {
-      steelBool = false;
-    }
-    if (steelBool) {
-      i++;
-    }
-  })
-  root.childNodes.forEach(elem => {
-    let bool = true;
-    let curr = 0;
-    let need = 0;
-    elem.childNodes.forEach(elem2 => {
-      if (elem2.classList.contains("arrow")) {
-        bool = false;
-      }
-      if (bool) {
-        curr++;
-      }
-    });
-    need = i - curr;
-    for (let j = 0; need > -1; need--) {
-      let arrow = document.createElement("span");
-      arrow.classList.add("placeholder");
-      // arrow.textContent = " → ";
-      elem.insertBefore(arrow, elem.childNodes[0]);
-    }
-  })
-  let credit = document.createElement("span");
-  credit.classList.add("credit");
-  credit.textContent = "Made by Habbe";
-  credit.style.margin = "0 10px";
-  root.childNodes[root.childNodes.length - 1].appendChild(credit)
-  console.log('root.childNodes[root.childNodes.length]: ', root.childNodes[root.childNodes.length - 1]);
+    let steelEnd = document.querySelector(".row.row-Steel");
+    let credit = document.createElement("span");
+    credit.classList.add("credit");
+    credit.textContent = "By Habbe";
+    steelEnd.appendChild(credit);
+    function LightenDarkenColor(col, amt) {
+        var usePound = false;
+        if (col[0] == "#") {
+            col = col.slice(1);
+            usePound = true;
+        }
 
+        var num = parseInt(col, 16);
+
+        var r = (num >> 16) + amt;
+
+        if (r > 255) r = 255;
+        else if (r < 0) r = 0;
+
+        var b = ((num >> 8) & 0x00ff) + amt;
+
+        if (b > 255) b = 255;
+        else if (b < 0) b = 0;
+
+        var g = (num & 0x0000ff) + amt;
+
+        if (g > 255) g = 255;
+        else if (g < 0) g = 0;
+
+        return (usePound ? "#" : "") + (g | (b << 8) | (r << 16)).toString(16);
+    }
 })();
